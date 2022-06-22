@@ -8,14 +8,56 @@ require("moment/locale/es.js")
 
 
 const tareas = csv
+
 const fechaInicioProg = 'Campo personalizado (Fecha Inicio Programada)'
 const fechaFinProg = 'Campo personalizado (Fecha Fin Programada)'
 
-let tareasFilter = tareas.filter( record => 
-  record.Responsable.includes("marriojas") ||
-  record.Responsable.includes("bsalazar")  ||
-  record.Responsable.includes("hpadilla") 
-  )
+let tareasColor = []
+for ( var index=0; index<tareas.length; index++ ) {
+  switch ( tareas[index].Responsable ) {
+    case "hpadilla":
+      tareasColor.push( { ...tareas[index],"color": "#EF9A9A" } );
+      break;
+    case "emarino":
+      tareasColor.push( { ...tareas[index],"color": "#90CAF9" } );
+      break;
+    case "acappelletti":
+      tareasColor.push( { ...tareas[index],"color": "#A5D6A7" } );
+      break;
+    case "jhurtado":
+      tareasColor.push( { ...tareas[index],"color": "#BA68C8" } );
+      break;
+    case "marriojas":
+      tareasColor.push( { ...tareas[index],"color": "#F06292" } );
+      break;
+    case "bsalazar":
+      tareasColor.push( { ...tareas[index],"color": "#7986CB" } );
+      break;
+    case "asmarin":
+      tareasColor.push( { ...tareas[index],"color": "#FFEE58" } );
+      break;
+    case "fzoccali":
+      tareasColor.push( { ...tareas[index],"color": "#4DB6AC" } );
+      break;
+    case "ddisanzo":
+      tareasColor.push( { ...tareas[index],"color": "#FFB74D" } );
+      break;
+    case "pcampanella":
+      tareasColor.push( { ...tareas[index],"color": "#4DD0E1" } );
+      break;
+    case "dborrego":
+      tareasColor.push( { ...tareas[index],"color": "#FF8A65" } );
+      break;
+    case "ljaramillo":
+      tareasColor.push( { ...tareas[index],"color": "#29B6F6" } );
+      break;
+    default:
+      tareasColor.push( { ...tareas[index],"color": "#dfe6e9" } );
+      break
+  }
+}
+
+let tareasFilter = tareasColor
 
 const myEventsList = tareasFilter.map((data, key) => {
   const dateDay = data[fechaInicioProg].slice(0, 2)
@@ -28,34 +70,25 @@ const myEventsList = tareasFilter.map((data, key) => {
   const dateYearFin = data[fechaFinProg].slice(6, 8);
   const fechaFin = `20${dateYearFin}-${dateMonthFin}-${dateDayFin} 12:00 AM`
 
+  const clave = "Clave de incidencia"
+  const jira = 'https://jira.edenor.com/browse/'
+  const link = jira+data[clave]
+
   return(    
       {
         title: data.Resumen + " - "+ data.Responsable,
         start: new Date(fechaInicio),
         end: new Date(fechaFin),
+        color: data.color,
+        clave: link
       }
   ) 
 })
 
 const localizer = momentLocalizer(moment)
 
-// 
-
-function alert() {
-  return(
-    <>
-      <div style={{ height: 10 }}>
-        Hello World!
-      </div>
-    </>
-  )
-}
-
-// 
-
-
 export const MyCalendar = props => (
-  <div style={{ height: '400px' }} className="bigCalendar-container">
+  <div style={{ height: '700px' }} className="bigCalendar-container">
     <div className='header'>
         <p className='header-title'>Calendario</p>
     </div>
@@ -65,7 +98,13 @@ export const MyCalendar = props => (
       startAccessor="start"
       endAccessor="end"
       className='calendar'
-      onSelectEvent={alert}
+      onSelectEvent={
+        function linkJira (event,) {
+          return(
+            // window.open(event.clave, '_blank')
+          )
+        }
+      }
       messages={{
         next: "▶",
         previous: "◀",
@@ -74,6 +113,19 @@ export const MyCalendar = props => (
         week: "Semana",
         day: "Día",
       }}
+      eventPropGetter=
+      {function(event,) {
+        var backgroundColor = event.color;
+        var style = {
+            backgroundColor: backgroundColor,
+            borderRadius: '0px',
+            opacity: 0.8,
+            color: 'black',
+            display: 'block'
+        };
+        return {
+            style: style
+        };}}
      />
     </div>
 )

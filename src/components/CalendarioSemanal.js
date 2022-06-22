@@ -5,7 +5,6 @@ import {Tareas} from './Tareas011122'
 
 
 let ahora = moment().format("DD/MM/YYYY")
-console.log(ahora)
 
 export default function CalendarioSemanal() {
 
