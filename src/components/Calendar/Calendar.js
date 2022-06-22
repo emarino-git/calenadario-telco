@@ -101,7 +101,7 @@ export const MyCalendar = props => (
       onSelectEvent={
         function linkJira (event,) {
           return(
-            // window.open(event.clave, '_blank')
+            window.open(event.clave, '_blank')
           )
         }
       }
