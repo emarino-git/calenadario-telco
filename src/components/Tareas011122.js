@@ -1,6 +1,5 @@
 import React from "react";
 import "./Tareas.css";
-// import CSVReader from "./CSVReader";
 import { csv } from '../data/csv'
 
 export const dias = {
